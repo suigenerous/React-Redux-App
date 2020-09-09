@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { checkForToken } from './utils'
 
 import { connect } from "react-redux";
 
@@ -8,8 +9,6 @@ import { spotifyRedirectAction, spotifyFetchTokenAction } from './actions'
 const redirectHandler = (event, redirect) => {
   event.preventDefault();
   redirect();
-  debugger;
-
 };
 
 function NotAuthorized(props) {
@@ -26,6 +25,12 @@ function Authorized(props){
 }
 
 function App(props) {
+
+  // checks to see if token exists in url and grabs token if it does, if not, it will continue as normal
+  if (checkForToken()){
+    props.spotifyFetchTokenAction();
+  }
+
   console.log(props);
   return (
     <div className="App">

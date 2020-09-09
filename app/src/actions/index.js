@@ -4,7 +4,7 @@ import {spotifyRedirect, currentHash, axiosGetter, createHeader }from '../utils/
 
 export const FETCHING = "FETCHING";
 export const FETCHING_TOKEN = "FETCHING_TOKEN";
-export const FETCH_SUCCESS = "FETCH_SUCCESS";
+export const FETCH_TOKEN_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_ERROR = "FETCH_ERROR";
 export const AUTHORIZING = "AUTHORIZING";
 export const REDIRECTING = "REDIRECTING";
@@ -32,8 +32,11 @@ export const spotifyFetchTokenAction = () => {
         dispatch({
             type: FETCHING_TOKEN
         })
-        // deploys spotify Redirect function
-        spotifyRedirect();
+        const accessToken = currentHash();
+        dispatch({
+            type: FETCH_TOKEN_SUCCESS,
+            payload: accessToken
+        })
     }
 }
 

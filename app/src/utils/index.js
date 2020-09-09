@@ -72,3 +72,8 @@ export function axiosGetter(h){
   export const createHeader = (token) => {
       return {Authorization: `Bearer ${token}`};
   };
+
+  export const checkForToken = () => {
+      const tokenExists = window.location.href.indexOf('#access_token') > 0;
+      return tokenExists;
+  }
