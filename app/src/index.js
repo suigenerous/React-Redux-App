@@ -8,7 +8,9 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 
-const store = createStore(() => {}, applyMiddleware(thunk))
+import { spotifyReducer } from './reducers'
+
+const store = createStore(spotifyReducer, applyMiddleware(thunk))
 
 ReactDOM.render(
   <React.StrictMode>
