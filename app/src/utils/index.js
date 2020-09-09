@@ -7,7 +7,7 @@ export const spotifyRedirect = () => {
   
     const authEndpoint = "https://accounts.spotify.com/authorize";
     const clientId = 'd84e971aa0a841d3a990820b1676fcd1';
-    const redirectUri = 'http://localhost:3000/user/spotifyauth/spotifyuserdata';
+    const redirectUri = 'http://localhost:3000/';
     const scopes = [
         "playlist-read-private",
         "user-top-read",
@@ -22,7 +22,7 @@ export const spotifyRedirect = () => {
     return window.location.replace(authURL);
 
 }
-// hash helper function
+// hash helper function, returns access token
 
 export const currentHash = () => {
     const hash = window.location.hash
@@ -46,7 +46,6 @@ export function axiosGetter(h, iteration){
         .get('https://api.spotify.com/v1/me/player/recently-played', {headers: h })
           // on response received 
         .then((res) => {
-          //   debugger;
           // grabs an array of song objects from response and assigns to tempSongObjArr
           const tempSongObjArr = res.data.items;
           // grabs cursors object containg .after and .before unix timecode strings from response and assings to tempCursorsObj
@@ -59,7 +58,6 @@ export function axiosGetter(h, iteration){
               songObjectsArray: tempSongObjArr,
           };
           // coppies existing array of response objects and adds current iteration to the array
-          // debugger;
           return resObj;
   
         })
@@ -71,5 +69,7 @@ export function axiosGetter(h, iteration){
           return;
         })
   }
-  
-  export const tokenHeader = {Authorization: `Bearer ${token}`};
+
+  export const createHeader = (token) => {
+      return {Authorization: `Bearer ${token}`};
+  };
