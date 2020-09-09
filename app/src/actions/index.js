@@ -42,16 +42,22 @@ export const spotifyFetchTokenAction = () => {
 }
 
 export const spotifyFetchDataAction = (token) => {
-    const header = createHeader(token);
     return function(dispatch){
+        const header = createHeader(token);
         console.log('inside fetching data');
         dispatch({
             type: FETCHING_DATA
         });
-        const data = axiosGetter(header);
-        dispatch({
-            type: FETCH_DATA_SUCCESS,
-            payload: data
-        })
-    }
+        axiosGetter(header)
+            .then(res => {
+                dispatch({
+                    type: FETCH_DATA_SUCCESS,
+                    payload: res.songObjectsArray
+                });
+            })
+            .catch (err => {
+                console.log(err);
+            })
+        
+    };
 };

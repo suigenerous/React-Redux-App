@@ -19,7 +19,7 @@ export const spotifyReducer = (state = initialState, action) => {
         case FETCH_TOKEN_SUCCESS:
             return {...state, token: action.payload, tokenFetched: true};
         case FETCH_DATA_SUCCESS:
-            return {...state, spotifyData: action.payload} // and authorized = true
+            return {...state, spotifyData: action.payload, authorized: true} 
         default:
             return state;
     }

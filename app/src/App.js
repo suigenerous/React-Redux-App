@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { checkForToken } from './utils'
-
 import { connect } from "react-redux";
 
 import { spotifyRedirectAction, spotifyFetchTokenAction, spotifyFetchDataAction } from './actions'
@@ -18,9 +17,13 @@ function NotAuthorized(props) {
 };
 
 function Authorized(props){
-  console.log(props.spotifyData);
+  const songsArray = props.spotifyData;
   return(
-    <div>Spotify Data will go here</div>
+    <div>
+      {songsArray.map((song) => {
+        return <p>{song.track.album.name}</p>
+      })}
+    </div>
   );
 }
 
@@ -32,12 +35,20 @@ function App(props) {
   }
 
   // check to see if token has been fetched from fetchedToken state value
+  // console.log('token fetched?: ' + props.tokenFetched);
 
-  if (props.tokenFetched) {
-    spotifyFetchDataAction(props.token);
-  }
+  useEffect(() => {
+    if (props.tokenFetched === true) {
+      props.spotifyFetchDataAction(props.token);
+    };
+  },[props.tokenFetched])
+  
+  
 
   console.log(props);
+
+  // return jsx
+
   return (
     <div className="App">
       {props.authorized ? <Authorized spotifyData = {props.spotifyData}/> : <NotAuthorized redirect = {props.spotifyRedirectAction}/>}
