@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { checkForToken } from './utils'
 import { connect } from "react-redux";
 import {
-  Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button, CardDeck
+  CardText, CardBody,
+  CardTitle, CardSubtitle, Button,
 } from 'reactstrap';
 import { spotifyRedirectAction, spotifyFetchTokenAction, spotifyFetchDataAction } from './actions'
 import styled from 'styled-components';
@@ -35,6 +35,7 @@ function Authorized(props){
       <h1>Recently Played Songs:</h1>
       {songsArray.map((song) => {
         return <SongCard
+                key = {song.track.uri}
                 title = {song.track.album.name}
                 artist = {song.track.album.artists[0].name}
                 image = {song.track.album.images[0].url}
@@ -72,11 +73,13 @@ function App(props) {
   // check to see if token has been fetched from fetchedToken state value
   // console.log('token fetched?: ' + props.tokenFetched);
 
+  const {tokenFetched, spotifyFetchDataAction, token} = props;
+  
   useEffect(() => {
-    if (props.tokenFetched === true) {
-      props.spotifyFetchDataAction(props.token);
+    if (tokenFetched === true) {
+      spotifyFetchDataAction(token);
     };
-  },[props.tokenFetched])
+  },[tokenFetched, spotifyFetchDataAction, token])
 
   // return jsx
 
