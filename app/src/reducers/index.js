@@ -1,20 +1,22 @@
-import {FETCHING, FETCH_SUCCESS, FETCH_ERROR} from '../actions'
+import {FETCHING, REDIRECTED, REDIRECTING, AUTHORIZING, FETCHING_TOKEN, FETCH_SUCCESS, FETCH_ERROR} from '../actions'
 
 const initialState = {
     authorized: false,
+    tokenFetched: false,
+    authorizing: false,
+    fetchingToken: false,
+    redirected: false,
+    token: '',
     spotifyData: {},
     fetchingData: false,
-    errors: {}
+    errors: {},
 };
 
 export const spotifyReducer = (state = initialState, action) => {
     switch (action.type){
-        case FETCHING:
-            return {...state, fetchingData: true};
-        case FETCH_SUCCESS:
-            return {...state, spotifyData: action.payload, fetchingData: false, authorized: true};
-        case FETCH_ERROR:
-            return {...state, errors: action.payload, fetchingData: false, authorized: false};
+        case FETCHING_TOKEN:
+            console.log('fetching token')
+            return {...state, fetchingToken: true};
         default:
             return state;
     }

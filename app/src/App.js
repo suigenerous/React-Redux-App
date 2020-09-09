@@ -1,22 +1,22 @@
 import React from 'react';
 import './App.css';
 
-import { spotifyRedirect } from './utils'
-
 import { connect } from "react-redux";
 
-import { spotifyFetch } from './actions'
+import { spotifyRedirectAction, spotifyFetchTokenAction } from './actions'
 
-const redirectHandler = (event) => {
+const redirectHandler = (event, redirect) => {
   event.preventDefault();
-  return spotifyRedirect();
-}
+  redirect();
+  debugger;
 
-function NotAuthorized() {
+};
+
+function NotAuthorized(props) {
   return(
-    <button onClick = {redirectHandler}>Click to Authorize Spotify</button>
+    <button onClick = {(e) => {redirectHandler(e, props.redirect)}}>Click to Authorize Spotify</button>
   );
-}
+};
 
 function Authorized(props){
   console.log(props.spotifyData);
@@ -26,10 +26,10 @@ function Authorized(props){
 }
 
 function App(props) {
-  debugger;
+  console.log(props);
   return (
     <div className="App">
-      {props.authorized ? <Authorized/> : <NotAuthorized/>}
+      {props.authorized ? <Authorized spotifyData = {props.spotifyData}/> : <NotAuthorized redirect = {props.spotifyRedirectAction}/>}
     </div>
   );
 }
@@ -37,11 +37,16 @@ function App(props) {
 const mapStateToProps = state => {
   return {
     authorized: state.authorized,
+    tokenFetched: state.tokenFetched,
+    authorizing: state.authorizing,
+    fetchingToken: state.fetchingToken,
+    redirected: state.redirected,
+    token: state.token,
     spotifyData: state.spotifyData,
     fetchingData: state.fetchingData,
-    errors: state.errors
+    errors: state.errors,
   };
 };
 
-export default connect(mapStateToProps, {spotifyFetch})(App);
+export default connect(mapStateToProps, {spotifyRedirectAction, spotifyFetchTokenAction})(App);
 
