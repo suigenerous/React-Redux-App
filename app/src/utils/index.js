@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { useEffect} from 'react-dom';
 // redirect helper function
 
 export const spotifyRedirect = () => {
@@ -41,33 +41,35 @@ export const currentHash = () => {
 // axiosGetter function
 
 export function axiosGetter(h){
-    // calls axios method get passing spotify recently-played endpoint url and header object 
-      return axios
+    useEffect(() => {
+        // calls axios method get passing spotify recently-played endpoint url and header object 
+        return axios
         .get('https://api.spotify.com/v1/me/player/recently-played', {headers: h })
-          // on response received 
+        // on response received 
         .then((res) => {
-          // grabs an array of song objects from response and assigns to tempSongObjArr
-          const tempSongObjArr = res.data.items;
-          // grabs cursors object containg .after and .before unix timecode strings from response and assings to tempCursorsObj
-          const tempCursorsObj = res.data.cursors;
-          // create response object 
-          const resObj = {
-              before: tempCursorsObj.before,
-              after: tempCursorsObj.after,
-              songObjectsArray: tempSongObjArr,
-          };
-          // coppies existing array of response objects and adds current iteration to the array
-          return resObj;
-  
+        // grabs an array of song objects from response and assigns to tempSongObjArr
+        const tempSongObjArr = res.data.items;
+        // grabs cursors object containg .after and .before unix timecode strings from response and assings to tempCursorsObj
+        const tempCursorsObj = res.data.cursors;
+        // create response object 
+        const resObj = {
+            before: tempCursorsObj.before,
+            after: tempCursorsObj.after,
+            songObjectsArray: tempSongObjArr,
+        };
+        // coppies existing array of response objects and adds current iteration to the array
+        return resObj;
+
         })
-          // on error received
+        // on error received
         .catch((err) => {
-          return console.log(err.message);
+        return console.log(err);
         })
         .finally(() => {
-          return;
+        return;
         })
-  }
+    },[]);
+}
 
   export const createHeader = (token) => {
       return {Authorization: `Bearer ${token}`};

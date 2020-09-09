@@ -1,4 +1,3 @@
-import axios from 'axios';
 
 import {spotifyRedirect, currentHash, axiosGetter, createHeader }from '../utils/'
 
@@ -8,38 +7,51 @@ export const FETCH_TOKEN_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_ERROR = "FETCH_ERROR";
 export const AUTHORIZING = "AUTHORIZING";
 export const REDIRECTING = "REDIRECTING";
-export const REDIRECTED = "REDIRECTED"
+export const REDIRECTED = "REDIRECTED";
+export const FETCHING_DATA = "FETCHING_DATA";
+export const FETCH_DATA_SUCCESS = "FETCH_DATA_SUCCESS";
 
 export const spotifyRedirectAction = () => {
     return function(dispatch){
-        console.log('inside spotify redirecting')
+        console.log('inside spotify redirecting');
         // initial dispatch while token fetching is in process
         dispatch({
             type: REDIRECTING
-        })
+        });
         // deploys spotify Redirect function
         spotifyRedirect();
         dispatch ({
             type: REDIRECTED
-        })
+        });
     }
 }
 
 export const spotifyFetchTokenAction = () => {
     return function(dispatch){
-        console.log('inside fetching token')
+        console.log('inside fetching token');
         // initial dispatch while token fetching is in process
         dispatch({
             type: FETCHING_TOKEN
-        })
+        });
         const accessToken = currentHash();
         dispatch({
             type: FETCH_TOKEN_SUCCESS,
             payload: accessToken
-        })
+        });
     }
 }
 
-export const spotifyFetchData = () => {
-    return;
+export const spotifyFetchDataAction = (token) => {
+    const header = createHeader(token);
+    return function(dispatch){
+        console.log('inside fetching data');
+        dispatch({
+            type: FETCHING_DATA
+        });
+        const data = axiosGetter(header);
+        dispatch({
+            type: FETCH_DATA_SUCCESS,
+            payload: data
+        })
+    }
 };

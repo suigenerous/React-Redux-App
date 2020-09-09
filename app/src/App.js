@@ -4,7 +4,7 @@ import { checkForToken } from './utils'
 
 import { connect } from "react-redux";
 
-import { spotifyRedirectAction, spotifyFetchTokenAction } from './actions'
+import { spotifyRedirectAction, spotifyFetchTokenAction, spotifyFetchDataAction } from './actions'
 
 const redirectHandler = (event, redirect) => {
   event.preventDefault();
@@ -31,6 +31,12 @@ function App(props) {
     props.spotifyFetchTokenAction();
   }
 
+  // check to see if token has been fetched from fetchedToken state value
+
+  if (props.tokenFetched) {
+    spotifyFetchDataAction(props.token);
+  }
+
   console.log(props);
   return (
     <div className="App">
@@ -53,5 +59,5 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {spotifyRedirectAction, spotifyFetchTokenAction})(App);
+export default connect(mapStateToProps, {spotifyRedirectAction, spotifyFetchTokenAction, spotifyFetchDataAction})(App);
 

@@ -1,4 +1,4 @@
-import {FETCHING, REDIRECTED, REDIRECTING, AUTHORIZING, FETCHING_TOKEN, FETCH_TOKEN_SUCCESS, FETCH_ERROR} from '../actions'
+import {FETCHING, REDIRECTED, REDIRECTING, AUTHORIZING, FETCHING_TOKEN, FETCH_TOKEN_SUCCESS, FETCH_ERROR, FETCH_DATA_SUCCESS} from '../actions'
 
 const initialState = {
     authorized: false,
@@ -17,8 +17,10 @@ export const spotifyReducer = (state = initialState, action) => {
         case REDIRECTED:
             return {...state, redirected: true};
         case FETCH_TOKEN_SUCCESS:
-            return {...state, token: action.payload, tokenFetched: true}
+            return {...state, token: action.payload, tokenFetched: true};
+        case FETCH_DATA_SUCCESS:
+            return {...state, spotifyData: action.payload} // and authorized = true
         default:
             return state;
     }
-}
+};
