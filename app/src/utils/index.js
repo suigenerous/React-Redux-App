@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useEffect} from 'react-dom';
 // redirect helper function
 
 export const spotifyRedirect = () => {

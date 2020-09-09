@@ -10,6 +10,8 @@ import { createStore, applyMiddleware } from 'redux';
 
 import { spotifyReducer } from './reducers'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const store = createStore(spotifyReducer, applyMiddleware(thunk))
 
 ReactDOM.render(

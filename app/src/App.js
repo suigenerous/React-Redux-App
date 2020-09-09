@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
-import './App.css';
 import { checkForToken } from './utils'
 import { connect } from "react-redux";
-
+import {
+  Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button, CardDeck
+} from 'reactstrap';
 import { spotifyRedirectAction, spotifyFetchTokenAction, spotifyFetchDataAction } from './actions'
+import styled from 'styled-components';
 
 const redirectHandler = (event, redirect) => {
   event.preventDefault();
@@ -16,15 +19,47 @@ function NotAuthorized(props) {
   );
 };
 
+const CenteredDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  align-items: center;
+  align-content: center;
+`
+
 function Authorized(props){
   const songsArray = props.spotifyData;
+  console.log(songsArray);
+  return(
+    <CenteredDiv>
+      <h1>Recently Played Songs:</h1>
+      {songsArray.map((song) => {
+        return <SongCard
+                title = {song.track.album.name}
+                artist = {song.track.album.artists[0].name}
+                image = {song.track.album.images[0].url}
+                popularity = {song.track.album.popularity}
+                songUrl = {song.track.album.external_urls.spotify}
+              />
+      })}
+    </CenteredDiv>
+  );
+}
+
+function SongCard(props){
   return(
     <div>
-      {songsArray.map((song) => {
-        return <p>{song.track.album.name}</p>
-      })}
+      <CenteredDiv>
+        <img width = "40%" src={props.image} alt={props.title} />
+        <CardBody>
+          <CardTitle>{props.title}</CardTitle>
+          <CardSubtitle>{props.artist}</CardSubtitle>
+          <CardText>Popularity Index: {props.popularity}</CardText>
+          <Button href = {props.songUrl}>Play song on Spotify</Button>
+        </CardBody>
+      </CenteredDiv>
     </div>
-  );
+  )
 }
 
 function App(props) {
@@ -42,10 +77,6 @@ function App(props) {
       props.spotifyFetchDataAction(props.token);
     };
   },[props.tokenFetched])
-  
-  
-
-  console.log(props);
 
   // return jsx
 
