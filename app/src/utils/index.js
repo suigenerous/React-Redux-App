@@ -56,6 +56,7 @@ export function axiosGetter(h){
               songObjectsArray: tempSongObjArr,
           };
           console.log('called api');
+          console.log(res);
           // coppies existing array of response objects and adds current iteration to the array
           return resObj;
   
