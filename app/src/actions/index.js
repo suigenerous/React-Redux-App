@@ -1,4 +1,4 @@
-
+import axios from 'axios';
 import {spotifyRedirect, currentHash, axiosGetter, createHeader }from '../utils/'
 
 export const FETCHING = "FETCHING";
@@ -43,21 +43,37 @@ export const spotifyFetchTokenAction = () => {
 
 export const spotifyFetchDataAction = (token) => {
     return function(dispatch){
-        const header = createHeader(token);
         console.log('inside fetching data');
         dispatch({
             type: FETCHING_DATA
-        });
-        axiosGetter(header)
-            .then(res => {
-                dispatch({
-                    type: FETCH_DATA_SUCCESS,
-                    payload: res.songObjectsArray
-                });
-            })
-            .catch (err => {
-                console.log(err);
-            })
+        })
+        const header = createHeader(token);
+        const limit = 50;
+        let initialBefore = Date.now();
+        let continueLoop = true;
+
+        // const setData = ((data) => {return data});
+        // let data = setData({});
+        async function recursiveCaller(){
+            let before = initialBefore;
+            let res = await axios.get(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}&before=${before}`, {headers: header });
+            do {
+                try {
+                    if (res !== null){
+                        let res = await axios.get(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}&before=${before}`, {headers: header });
+                        console.log(res.data.items);
+                        before = res.data.cursors.after;
+                    }
+                }
+                catch(e) {
+                    console.log(e);
+                    continueLoop = false;
+                }
+            }
+            while (continueLoop);
+
+        };
+        recursiveCaller();
         
     };
 };

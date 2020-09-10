@@ -39,10 +39,10 @@ export const currentHash = () => {
 
 // axiosGetter function
 
-export function axiosGetter(h){
+export function axiosGetter(h, limit, before){
     // calls axios method get passing spotify recently-played endpoint url and header object 
       return axios
-        .get('https://api.spotify.com/v1/me/player/recently-played', {headers: h })
+        .get(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}&before=${before}`, {headers: h })
           // on response received 
         .then((res) => {
           // grabs an array of song objects from response and assigns to tempSongObjArr
@@ -56,7 +56,6 @@ export function axiosGetter(h){
               songObjectsArray: tempSongObjArr,
           };
           console.log('called api');
-          console.log(res);
           // coppies existing array of response objects and adds current iteration to the array
           return resObj;
   
